@@ -8,6 +8,8 @@ Frontend only. React + Vite, no backend, no assets to download.
 
 ![stack](https://img.shields.io/badge/React-18-61dafb) ![stack](https://img.shields.io/badge/Vite-5-646cff) ![stack](https://img.shields.io/badge/board-pure%20SVG-e23030)
 
+![Ludo Katta — four seats, cuts already happening in the match log](docs/gameplay.png)
+
 ## Play
 
 ```bash
@@ -53,6 +55,10 @@ src/
 
 One function maps a ghoda's progress (0–57) to a grid cell, and the squares,
 the tokens and the computer's distance maths all read from it.
+
+## Screens
+
+<img src="docs/setup.png" width="520" alt="Seats, names and how many ghoda each" />
 
 ## License
 
