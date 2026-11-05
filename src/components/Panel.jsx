@@ -1,21 +1,6 @@
 import { COLORS, LAST } from '../data/board.js'
 import { legalMoves } from '../game/engine.js'
-
-const PIPS = {
-  1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8],
-  5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8],
-}
-
-export function Dice({ value, rolling, spin }) {
-  if (!value) return <div className="dice dice-empty"><span>?</span></div>
-  return (
-    <div className={'dice' + (rolling ? ' dice-roll' : '')} key={spin}>
-      {Array.from({ length: 9 }).map((_, i) => (
-        <span key={i} className={PIPS[value].includes(i) ? 'pip on' : 'pip'} />
-      ))}
-    </div>
-  )
-}
+import Dice3D from './Dice3D.jsx'
 
 export default function Panel({ state, dispatch }) {
   const p = state.players[state.turn]
@@ -23,7 +8,6 @@ export default function Panel({ state, dispatch }) {
   const human = !p.ai
   const busy = state.phase === 'walk'
   const moves = state.phase === 'pick' ? legalMoves(state, p.id, state.dice) : []
-  const spin = state.players.reduce((n, q) => n + q.rolls, 0)
 
   return (
     <aside className="panel">
@@ -38,7 +22,7 @@ export default function Panel({ state, dispatch }) {
         </div>
 
         <div className="dice-row">
-          <Dice value={state.dice} rolling={busy} spin={spin} />
+          <Dice3D value={state.dice} rolling={busy} color={c.hex} />
           <div className="dice-side">
             {state.phase === 'roll' && (
               <button className="btn primary" onClick={() => dispatch({ type: 'ROLL' })} disabled={!human}>

@@ -48,7 +48,23 @@ button { font-family: inherit; cursor: pointer; }
 .btn.small { padding: 9px 13px; font-size: 13px; }
 .btn.big { width: 100%; padding: 15px; font-size: 16.5px; }
 
-.app { min-height: 100%; display: flex; flex-direction: column; }
+.app { min-height: 100%; display: flex; flex-direction: column; position: relative; }
+
+.bokeh { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.bokeh i {
+  position: absolute; border-radius: 50%; background: var(--c);
+  filter: blur(6px); opacity: 0;
+  box-shadow: 0 0 22px 4px var(--c);
+  animation: twinkle-drift linear infinite;
+}
+@keyframes twinkle-drift {
+  0% { opacity: 0; transform: translate(0, 0) scale(.6); }
+  12% { opacity: .55; }
+  50% { opacity: .32; transform: translate(14px, -22px) scale(1); }
+  88% { opacity: .5; }
+  100% { opacity: 0; transform: translate(-10px, -42px) scale(.6); }
+}
+.app > *:not(.bokeh) { position: relative; z-index: 1; }
 
 .topbar {
   display: flex; align-items: center; gap: 14px;
@@ -144,27 +160,13 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 .dice-row { display: flex; align-items: center; gap: 16px; margin-top: 14px; }
-.dice {
-  width: 72px; height: 72px; flex: none;
-  display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr);
-  gap: 3px; padding: 9px;
-  border-radius: 16px;
-  background: linear-gradient(160deg, #fffdf8, #e6dcc6);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, .45), inset 0 -4px 0 rgba(120, 90, 40, .18);
-  animation: land .4s cubic-bezier(.2, 1.5, .4, 1);
+.dice3d-stage {
+  width: 108px; height: 108px; flex: none;
+  border-radius: 16px; overflow: hidden;
+  background: radial-gradient(circle at 50% 28%, rgba(255, 255, 255, .08), transparent 65%), rgba(0, 0, 0, .22);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .08);
 }
-.dice-empty {
-  display: grid; place-items: center; grid-template-columns: 1fr; grid-template-rows: 1fr;
-  color: #b9a784; font-family: 'Baloo 2', sans-serif; font-size: 32px; font-weight: 800;
-}
-.dice-roll { animation: tumble .4s linear infinite; }
-@keyframes tumble {
-  0% { transform: rotate(0) scale(1); } 40% { transform: rotate(22deg) scale(1.07); }
-  70% { transform: rotate(-16deg) scale(.96); } 100% { transform: rotate(0) scale(1); }
-}
-@keyframes land { from { transform: scale(.7) rotate(-18deg); } to { transform: none; } }
-.pip { border-radius: 50%; }
-.pip.on { background: radial-gradient(circle at 34% 30%, #6b4a1b, #211404); }
+.dice3d-stage canvas { display: block; }
 .dice-side { flex: 1; display: grid; gap: 8px; }
 .dice-side .btn { width: 100%; }
 .hint { margin: 0; font-size: 13px; color: #ffe08a; font-weight: 600; }
@@ -228,6 +230,8 @@ button { font-family: inherit; cursor: pointer; }
   box-shadow: var(--shadow);
 }
 .winner-emoji { font-size: 56px; }
+.trophy3d-stage { width: 100%; height: 150px; margin: 0 auto 4px; }
+.trophy3d-stage canvas { display: block; }
 .winner h2 { margin: 8px 0 6px; font-size: 27px; }
 .winner p { margin: 0 0 18px; color: #e6ddd2; font-size: 13.5px; }
 

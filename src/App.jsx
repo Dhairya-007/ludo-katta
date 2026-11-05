@@ -2,8 +2,32 @@ import { useEffect, useReducer } from 'react'
 import Board from './components/Board.jsx'
 import Panel from './components/Panel.jsx'
 import Setup from './components/Setup.jsx'
+import Trophy3D from './components/Trophy3D.jsx'
 import { createGame, reducer, aiAction } from './game/engine.js'
 import { COLORS } from './data/board.js'
+
+function Bokeh() {
+  const colors = [COLORS[0].hex, COLORS[1].hex, COLORS[2].hex, COLORS[3].hex]
+  const dots = Array.from({ length: 14 }).map((_, i) => ({
+    c: colors[i % 4],
+    left: (i * 37) % 100,
+    top: (i * 53) % 100,
+    size: 10 + (i % 5) * 6,
+    delay: (i % 7) * 0.6,
+    dur: 6 + (i % 5) * 1.4,
+  }))
+  return (
+    <div className="bokeh" aria-hidden="true">
+      {dots.map((d, i) => (
+        <i key={i} style={{
+          '--c': d.c, left: `${d.left}%`, top: `${d.top}%`,
+          width: d.size, height: d.size,
+          animationDelay: `${d.delay}s`, animationDuration: `${d.dur}s`,
+        }} />
+      ))}
+    </div>
+  )
+}
 
 export default function App() {
   const [game, dispatch] = useReducer(reducer, null)
@@ -33,6 +57,7 @@ export default function App() {
 
   return (
     <div className="app">
+      <Bokeh />
       <header className="topbar">
         <div className="brand">
           <span className="brand-dots">
@@ -59,7 +84,7 @@ export default function App() {
       {winner && (
         <div className="modal-wrap">
           <div className="winner" style={{ '--c': COLORS[winner.seat].hex }}>
-            <span className="winner-emoji">🏆</span>
+            <Trophy3D winnerSeat={winner.seat} />
             <h2>{winner.name} jeet gaya!</h2>
             <p>{winner.rolls} rolls, {winner.cuts} cuts made, {winner.lost} ghoda lost on the way.</p>
             <button className="btn primary" onClick={() => dispatch({ type: 'INIT', state: null })}>Ek vaar fari</button>
